@@ -5,20 +5,27 @@ void camera_act_fct() {
 
   // assign default values to thhe variables
   if (jsonDocument.containsKey("grabimage")) {
-    camera_fb_t* fb = esp_camera_fb_get();
+    for (int iframe = 0; iframe < 5; iframe++) {
+      // free frame buffer and adjust brightnesssetu
+      camera_fb_t* fb = esp_camera_fb_get();
+      esp_camera_fb_return(fb);
+    }
+
     if (!fb || fb->format != PIXFORMAT_JPEG) {
     } else {
       delay(40);
 
-      Serial.println("+++");
-      Serial.println("{'frame': ");
+      Serial.println("++");
+      Serial.print("{'frame': '");
       String encoded = base64::encode(fb->buf, fb->len);
+      esp_camera_fb_return(fb);
       Serial.write(encoded.c_str(), encoded.length());
-      Serial.println("}");
-      Serial.println("---");
+      Serial.println("'}");
+      Serial.println("--");
       Serial.println();
     }
     jsonDocument.clear();
+    jsonDocument["return"] = 1;
   }
 }
 
@@ -62,7 +69,7 @@ void setup_camera() {
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 10000000;
   config.pixel_format = PIXFORMAT_JPEG;
-  config.frame_size = FRAMESIZE_QVGA; //320x240
+  config.frame_size = FRAMESIZE_VGA; //320x240
   config.jpeg_quality = 10;
   config.fb_count = 2;
 

@@ -62,12 +62,11 @@ void setup()
 
   setup_camera();
   setup_led();
-
 }
 
 
 void loop() {
-  
+
   // for any timing-related purposes
   currentMillis = millis();
 
@@ -92,7 +91,7 @@ void loop() {
       Serial.println(task);
     }
 
-      jsonProcessor(task);
+    jsonProcessor(task);
   }
 
 }
@@ -123,7 +122,7 @@ void jsonProcessor(char task[]) {
   }
 
   /*
-    Drive LEDs
+    Drive LED
   */
   if (strcmp(task, led_act_endpoint) == 0) {
     led_act_fct();
@@ -134,4 +133,9 @@ void jsonProcessor(char task[]) {
   if (strcmp(task, led_get_endpoint) == 0) {
     led_get_fct();
   }
+
+  Serial.println("++");
+  serializeJson(jsonDocument, Serial);
+  Serial.println();
+  Serial.println("--");
 }
