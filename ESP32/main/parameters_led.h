@@ -1,0 +1,4 @@
+#define LED_PWM_CHANNEL 5
+#define LED_PWM_FREQ 5000
+#define LED_PWM_RESOLUTION 8
+#define LED_GPIO_NUM     4
